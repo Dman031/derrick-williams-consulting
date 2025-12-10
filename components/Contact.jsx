@@ -158,12 +158,9 @@ export default function Contact() {
                 or Salesforce needs.
               </p>
               <motion.a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  // TODO: Add Calendly link here
-                  alert('Calendly integration coming soon!')
-                }}
+                href="https://calendly.com/derwill503/30min"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-white rounded-lg font-body font-medium glow-accent hover:glow-strong transition-all duration-300 w-full sm:w-auto"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

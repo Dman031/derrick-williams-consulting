@@ -63,7 +63,7 @@ export default function Chatbot() {
     "How would Derrick fit this role?",
     "What's his Oracle experience?",
     "ServiceNow implementation help",
-    "Book a consultation"
+    "Book a 30-min consultation"
   ];
 
   return (
@@ -123,7 +123,35 @@ export default function Chatbot() {
               {suggestedQuestions.map((q, i) => (
                 <button
                   key={i}
-                  onClick={() => setInput(q)}
+                  onClick={() => {
+                    if (q === "Book a 30-min consultation") {
+                      // Auto-send booking request
+                      const userMessage = q;
+                      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+                      setIsLoading(true);
+                      
+                      fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                          messages: [...messages, { role: 'user', content: userMessage }]
+                        }),
+                      })
+                      .then(res => res.json())
+                      .then(data => {
+                        setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
+                      })
+                      .catch(error => {
+                        setMessages(prev => [...prev, { 
+                          role: 'assistant', 
+                          content: "I apologize, but I'm having trouble connecting. Please email Derrick directly at derwill503@gmail.com or connect on LinkedIn." 
+                        }]);
+                      })
+                      .finally(() => setIsLoading(false));
+                    } else {
+                      setInput(q);
+                    }
+                  }}
                   className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-full border border-slate-700"
                 >
                   {q}
